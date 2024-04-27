@@ -11,6 +11,7 @@ try {
     $username = $_ENV['DB_USERNAME'];
     $password = $_ENV['DB_PASSWORD'];
     $dbname = $_ENV['DB_NAME'];
+    $accessCodeEnv = $_ENV['ACCESS_CODE']; // Access code from .env
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -26,25 +27,31 @@ try {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $longUrl = $_POST["longUrl"];
-        
-        // Validate the URL
-        if (!filter_var($longUrl, FILTER_VALIDATE_URL)) {
-            $output = "Invalid URL. Please enter a valid URL.";
-        } else {
-            $scheme = parse_url($longUrl, PHP_URL_SCHEME);
-            if (!in_array($scheme, ['http', 'https'])) {
-                $output = "Invalid URL scheme. Only HTTP and HTTPS are allowed.";
-            } else {
-                $shortCode = substr(md5($longUrl), 0, 6); // Simple short code generation
-                
-                $sql = "INSERT INTO urls (short_code, long_url) VALUES (?, ?)";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ss", $shortCode, $longUrl);
-                $stmt->execute();
+        $accessCode = $_POST["accessCode"]; // Retrieve access code from form
 
-                $shortUrl = htmlspecialchars("$domain/?code=$shortCode");
-                $output = "Short URL created: <a href='$shortUrl' id='shortUrlLink'>$shortUrl</a>
-                           <button onclick='copyToClipboard()'>Copy URL</button>";
+        // Check if the entered access code matches the one in .env
+        if ($accessCode !== $accessCodeEnv) {
+            $output = "Unauthorized access. Invalid access code.";
+        } else {
+            // Validate the URL
+            if (!filter_var($longUrl, FILTER_VALIDATE_URL)) {
+                $output = "Invalid URL. Please enter a valid URL.";
+            } else {
+                $scheme = parse_url($longUrl, PHP_URL_SCHEME);
+                if (!in_array($scheme, ['http', 'https'])) {
+                    $output = "Invalid URL scheme. Only HTTP and HTTPS are allowed.";
+                } else {
+                    $shortCode = substr(md5($longUrl), 0, 6); // Simple short code generation
+                    
+                    $sql = "INSERT INTO urls (short_code, long_url) VALUES (?, ?)";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ss", $shortCode, $longUrl);
+                    $stmt->execute();
+
+                    $shortUrl = htmlspecialchars("$domain/?code=$shortCode");
+                    $output = "Short URL created: <a href='$shortUrl' id='shortUrlLink'>$shortUrl</a>
+                               <button onclick='copyToClipboard()'>Copy URL</button>";
+                }
             }
         }
     }
@@ -67,52 +74,68 @@ try {
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #ecf8f4; /* A softer green background */
+            background-color: #f4f4f9; /* Light grey background */
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            position: relative;
         }
         .container {
-            background: #fff;
+            background: #ffffff;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(36, 37, 38, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 350px;
             text-align: center;
         }
-        .container form {
-            background: #f9fff9; /* Very light green background for the form */
-            padding: 15px;
-            border: 1px solid #c3e6cb; /* Soft green border */
+        form {
+            background: #fafafa; /* Very light grey for the form background */
+            padding: 20px;
+            border: 1px solid #ddd; /* Light grey border */
             border-radius: 5px;
+            margin-top: 15px;
+        }
+        label {
+            color: #333; /* Dark grey for text */
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
         }
         input[type="text"], input[type="submit"], button {
-            width: calc(100% - 24px);
+            width: calc(100% - 20px);
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #c3e6cb; /* Soft green border */
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
             border-radius: 5px;
         }
         input[type="submit"], button {
-            background-color: #28a745; /* Bootstrap green */
+            background-color: #007bff; /* Bootstrap blue */
             color: white;
             cursor: pointer;
+            font-weight: bold;
             font-size: 16px;
             border: none;
         }
         input[type="submit"]:hover, button:hover {
-            background-color: #218838; /* Darker green */
+            background-color: #0056b3; /* Darker blue */
         }
         a, a:visited {
-            color: #155724; /* Dark green */
+            color: #007bff; /* Link blue */
             text-decoration: none;
         }
         p {
-            color: #155724; /* Dark green */
-            margin-top: 10px;
+            color: #333; /* Dark grey for text */
+            margin-top: 0;
+        }
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -122,10 +145,15 @@ try {
             <p><?= $output; ?></p>
         <?php endif; ?>
         <form method="post">
-            <label for="longUrl" style="color: #155724;">URL:</label>
+            <label for="longUrl">URL:</label>
             <input type="text" name="longUrl" id="longUrl" placeholder="Enter a valid HTTP or HTTPS URL" required>
+            <label for="accessCode">Access Code:</label>
+            <input type="text" name="accessCode" id="accessCode" placeholder="Enter access code" required>
             <input type="submit" value="Shorten">
         </form>
+    </div>
+    <div class="footer">
+        <a href="https://github.com/luhte" target="_blank">Made by Luhte</a>
     </div>
     <script>
         function copyToClipboard() {
