@@ -34,7 +34,7 @@ Guidelines for how to contribute to the project.
 Specify the license under which the project is released.
 
 ## Authors
-- **Your Name** - _Initial work_ - [YourGitHub](https://github.com/yourusername)
+- **Luhte** - _Initial work_ - [Luhte](https://github.com/luhte)
 
 ## Acknowledgments
 - Hat tip to anyone whose code was used
