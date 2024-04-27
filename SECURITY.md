@@ -7,7 +7,7 @@ currently being supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
+| 0.1     | :white_check_mark: |
 
 ## Reporting a Vulnerability
 Email me at rizzivr@pm.me
