@@ -148,7 +148,7 @@ try {
             <label for="longUrl">URL:</label>
             <input type="text" name="longUrl" id="longUrl" placeholder="Enter a valid HTTP or HTTPS URL" required>
             <label for="accessCode">Access Code:</label>
-            <input type="text" name="accessCode" id="accessCode" placeholder="Enter access code" required>
+            <input type="password" name="accessCode" id="accessCode" placeholder="Enter access code" required>
             <input type="submit" value="Shorten">
         </form>
     </div>
