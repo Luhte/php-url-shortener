@@ -20,7 +20,6 @@ This project is a simple URL shortener built with PHP and MySQL. It allows users
 1. Clone the repository to your local machine or download the zip and extract it.
 2. Navigate to the root directory of the project.
 3. Database Setup: Create a MySQL database with table called urls with fields
-  `id` int(11),
   `short_code` varchar(64),
   `long_url` varchar(255)
 5. Environment Variables: Make sure all the necessary environment variables are set in the .env file
