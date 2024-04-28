@@ -39,3 +39,6 @@ This project is a simple URL shortener built with PHP and MySQL. It allows users
 
 ## Acknowledgments
 - [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv)
+  
+
+[](https://www.freevisitorcounters.com/en/home/counter/1176962/t/9)
