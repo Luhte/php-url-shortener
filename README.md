@@ -30,15 +30,12 @@ This project is a simple URL shortener built with PHP and MySQL. It allows users
 ## Usage
 - Enter required details to to the .env file
 - Start the server
-- 
-## Contributing
-Guidelines for how to contribute to the project.
 
 ## License
-Specify the license under which the project is released.
+ [GPL-3.0 license](https://github.com/Luhte/php-url-shortener/LICENSE.md) 
 
 ## Authors
 - **Luhte** - _Initial work_ - [Luhte](https://github.com/luhte)
 
 ## Acknowledgments
-- [vlucas/phpdotenv](htpps://github.com/vlucas/phpdotenv)
+- [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv)
