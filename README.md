@@ -41,4 +41,4 @@ This project is a simple URL shortener built with PHP and MySQL. It allows users
 - [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv)
   
 
-![](https://komarev.com/ghpvc/?username=luhte)
+![](https://komarev.com/ghpvc/?username=luhte&style=for-the-badge&label=Repository+Views)
